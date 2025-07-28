@@ -1,0 +1,142 @@
+{
+  "name": "Matteo's Declic - Oracle Mystique",
+  "short_name": "Matteo's Declic",
+  "description": "Oracle mystique quotidien. Lion ascendant Connasse, ton aura trouble les dieux.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "lang": "fr-FR",
+  "dir": "ltr",
+  "categories": ["lifestyle", "entertainment", "personalization"],
+  "prefer_related_applications": false,
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72'><rect width='72' height='72' fill='%23000000' rx='16'/><circle cx='36' cy='24' r='8' fill='%23667eea' opacity='0.8'/><circle cx='36' cy='36' r='12' fill='%23a78bfa' opacity='0.6'/><circle cx='36' cy='48' r='6' fill='%23fbbf24' opacity='0.9'/><text x='36' y='42' font-size='16' text-anchor='middle' fill='white'>🔮</text></svg>",
+      "sizes": "72x72",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23000000' rx='20'/><circle cx='48' cy='30' r='10' fill='%23667eea' opacity='0.8'/><circle cx='48' cy='48' r='16' fill='%23a78bfa' opacity='0.6'/><circle cx='48' cy='66' r='8' fill='%23fbbf24' opacity='0.9'/><text x='48' y='54' font-size='20' text-anchor='middle' fill='white'>🔮</text></svg>",
+      "sizes": "96x96",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect width='128' height='128' fill='%23000000' rx='28'/><circle cx='64' cy='40' r='14' fill='%23667eea' opacity='0.8'/><circle cx='64' cy='64' r='20' fill='%23a78bfa' opacity='0.6'/><circle cx='64' cy='88' r='10' fill='%23fbbf24' opacity='0.9'/><text x='64' y='72' font-size='26' text-anchor='middle' fill='white'>🔮</text></svg>",
+      "sizes": "128x128",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 144 144'><rect width='144' height='144' fill='%23000000' rx='32'/><circle cx='72' cy='45' r='16' fill='%23667eea' opacity='0.8'/><circle cx='72' cy='72' r='24' fill='%23a78bfa' opacity='0.6'/><circle cx='72' cy='99' r='12' fill='%23fbbf24' opacity='0.9'/><text x='72' y='81' font-size='30' text-anchor='middle' fill='white'>🔮</text></svg>",
+      "sizes": "144x144",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 844'><rect width='390' height='844' fill='%23000000'/><defs><radialGradient id='bg1' cx='20%25' cy='50%25'><stop offset='0%25' stop-color='rgba(120,119,198,0.3)'/><stop offset='50%25' stop-color='transparent'/></radialGradient><radialGradient id='bg2' cx='80%25' cy='20%25'><stop offset='0%25' stop-color='rgba(255,119,198,0.15)'/><stop offset='50%25' stop-color='transparent'/></radialGradient><radialGradient id='bg3' cx='40%25' cy='80%25'><stop offset='0%25' stop-color='rgba(120,200,255,0.1)'/><stop offset='50%25' stop-color='transparent'/></radialGradient></defs><rect width='390' height='844' fill='url(%23bg1)'/><rect width='390' height='844' fill='url(%23bg2)'/><rect width='390' height='844' fill='url(%23bg3)'/><text x='195' y='180' font-size='32' text-anchor='middle' fill='%23fff' font-family='Georgia,serif' font-weight='bold'>Matteo's Declic</text><text x='195' y='230' font-size='15' text-anchor='middle' fill='%23e5e7eb' font-family='Georgia,serif'>Lion ascendant Connasse,</text><text x='195' y='250' font-size='15' text-anchor='middle' fill='%23e5e7eb' font-family='Georgia,serif'>ton aura trouble les dieux.</text><text x='195' y='280' font-size='15' text-anchor='middle' fill='%23e5e7eb' font-family='Georgia,serif'>Es-tu prêt.e à découvrir ton Oracle ?</text><rect x='95' y='320' width='200' height='50' rx='25' fill='%23667eea'/><text x='195' y='350' font-size='13' text-anchor='middle' fill='white' font-family='Georgia,serif'>lâches les secrets pétasse</text><text x='30' y='450' font-size='10' text-anchor='start' fill='rgba(167,139,250,0.3)' font-family='Georgia,serif'>✦</text><text x='350' y='500' font-size='10' text-anchor='start' fill='rgba(167,139,250,0.3)' font-family='Georgia,serif'>◐</text><text x='80' y='700' font-size='10' text-anchor='start' fill='rgba(167,139,250,0.3)' font-family='Georgia,serif'>☾</text><text x='320' y='650' font-size='10' text-anchor='start' fill='rgba(167,139,250,0.3)' font-family='Georgia,serif'>✧</text></svg>",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Interface d'accueil de l'oracle mystique"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 844'><rect width='390' height='844' fill='%23000000'/><defs><radialGradient id='bg1' cx='20%25' cy='50%25'><stop offset='0%25' stop-color='rgba(120,119,198,0.3)'/><stop offset='50%25' stop-color='transparent'/></radialGradient><radialGradient id='bg2' cx='80%25' cy='20%25'><stop offset='0%25' stop-color='rgba(255,119,198,0.15)'/><stop offset='50%25' stop-color='transparent'/></radialGradient></defs><rect width='390' height='844' fill='url(%23bg1)'/><rect width='390' height='844' fill='url(%23bg2)'/><rect x='50' y='200' width='290' height='200' rx='20' fill='rgba(251,191,36,0.1)' stroke='rgba(251,191,36,0.3)' stroke-width='2'/><text x='195' y='240' font-size='14' text-anchor='middle' fill='%23fbbf24' font-family='Georgia,serif'>Aujourd'hui, Christine Taubira te prête</text><text x='195' y='260' font-size='14' text-anchor='middle' fill='%23fbbf24' font-family='Georgia,serif'>son éloquence. Parle avec passion,</text><text x='195' y='280' font-size='14' text-anchor='middle' fill='%23fbbf24' font-family='Georgia,serif'>même pour commander un latte</text><text x='195' y='340' font-size='16' text-anchor='middle' fill='%23fbbf24' font-family='Georgia,serif' opacity='0.8'>🔮</text><text x='195' y='430' font-size='11' text-anchor='middle' fill='%239ca3af' font-style='italic' font-family='Georgia,serif'>Oracle du lundi 28 juillet 2025</text><text x='30' y='550' font-size='12' text-anchor='start' fill='rgba(167,139,250,0.2)' font-family='Georgia,serif'>✦</text><text x='350' y='600' font-size='12' text-anchor='start' fill='rgba(167,139,250,0.2)' font-family='Georgia,serif'>◐</text><text x='80' y='750' font-size='12' text-anchor='start' fill='rgba(167,139,250,0.2)' font-family='Georgia,serif'>☾</text></svg>",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Prédiction mystique quotidienne"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 768'><rect width='1024' height='768' fill='%23000000'/><defs><radialGradient id='bg1' cx='20%25' cy='50%25'><stop offset='0%25' stop-color='rgba(120,119,198,0.3)'/><stop offset='50%25' stop-color='transparent'/></radialGradient><radialGradient id='bg2' cx='80%25' cy='20%25'><stop offset='0%25' stop-color='rgba(255,119,198,0.15)'/><stop offset='50%25' stop-color='transparent'/></radialGradient></defs><rect width='1024' height='768' fill='url(%23bg1)'/><rect width='1024' height='768' fill='url(%23bg2)'/><text x='512' y='150' font-size='48' text-anchor='middle' fill='%23fff' font-family='Georgia,serif' font-weight='bold'>Matteo's Declic</text><text x='512' y='200' font-size='20' text-anchor='middle' fill='%23e5e7eb' font-family='Georgia,serif'>Oracle mystique quotidien</text><rect x='212' y='280' width='600' height='200' rx='20' fill='rgba(251,191,36,0.1)' stroke='rgba(251,191,36,0.3)' stroke-width='2'/><text x='512' y='340' font-size='20' text-anchor='middle' fill='%23fbbf24' font-family='Georgia,serif'>Tu es l'élégance incarnée façon Donatella,</text><text x='512' y='370' font-size='20' text-anchor='middle' fill='%23fbbf24' font-family='Georgia,serif'>même en pyjama chez Ikea</text><text x='512' y='430' font-size='28' text-anchor='middle' fill='%23fbbf24' font-family='Georgia,serif' opacity='0.8'>🔮</text><text x='512' y='520' font-size='16' text-anchor='middle' fill='%239ca3af' font-style='italic' font-family='Georgia,serif'>Oracle du lundi 28 juillet 2025</text></svg>",
+      "sizes": "1024x768",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "Vue desktop de l'oracle mystique"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Oracle du jour",
+      "short_name": "Oracle",
+      "description": "Découvre ton oracle mystique quotidien",
+      "url": "./?shortcut=today",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23667eea' rx='24'/><circle cx='48' cy='32' r='8' fill='%23000000' opacity='0.2'/><circle cx='48' cy='48' r='12' fill='%23000000' opacity='0.1'/><circle cx='48' cy='64' r='6' fill='%23fbbf24'/><text x='48' y='54' font-size='20' text-anchor='middle' fill='white'>🔮</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Mystique",
+      "short_name": "Mystique",
+      "description": "Plonge dans l'univers mystique de Matteo",
+      "url": "./?shortcut=mystique",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23a78bfa' rx='24'/><text x='48' y='30' font-size='12' text-anchor='middle' fill='white'>✦</text><text x='48' y='55' font-size='20' text-anchor='middle' fill='white'>🔮</text><text x='48' y='75' font-size='12' text-anchor='middle' fill='white'>☾</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+declic",
+      "url": "./?oracle=%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "./",
+      "accept": {
+        "text/plain": [".oracle", ".txt"],
+        "application/json": [".json"]
+      }
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "handle_links": "preferred",
+  "iarc_rating_id": "",
+  "related_applications": [],
+  "prefer_related_applications": false
+}

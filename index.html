@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matteo's Declic</title>
+    <meta name="description" content="Oracle mystique quotidien">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Declic">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Declic">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔮</text></svg>">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.1) 0%, transparent 50%);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 2s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #fff, #a78bfa, #fbbf24);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(167, 139, 250, 0.5);
+        }
+        
+        .welcome-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            color: #e5e7eb;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .oracle-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            text-transform: lowercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        
+        .oracle-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .oracle-button:hover::before {
+            left: 100%;
+        }
+        
+        .oracle-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+            animation: pulse 1s infinite;
+        }
+        
+        .oracle-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .prediction-container {
+            display: none;
+            margin-top: 3rem;
+            animation: slideUp 1s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .prediction-text {
+            font-size: 1.3rem;
+            line-height: 1.7;
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+        }
+        
+        .date-info {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #9ca3af;
+            font-style: italic;
+        }
+        
+        .mystical-symbols {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .symbol {
+            position: absolute;
+            color: rgba(167, 139, 250, 0.1);
+            font-size: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(102, 126, 234, 0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            display: none;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+            max-width: 90vw;
+            text-align: center;
+        }
+        
+        .install-button {
+            margin-left: 10px;
+            background: none;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        
+        .close-button {
+            margin-left: 5px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .title, .container, .prediction-container, .symbol, .oracle-button:hover {
+                animation: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .welcome-text {
+                font-size: 1.1rem;
+            }
+            
+            .prediction-text {
+                font-size: 1.1rem;
+                padding: 1.5rem;
+            }
+            
+            .install-prompt {
+                font-size: 0.8rem;
+                padding: 8px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .oracle-button {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            
+            .prediction-text {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (hover: none) and (pointer: coarse) {
+            .oracle-button:hover {
+                transform: none;
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mystical-symbols">
+        <div class="symbol" style="top: 10%; left: 10%; animation-delay: 0s;">✦</div>
+        <div class="symbol" style="top: 20%; right: 15%; animation-delay: 1s;">◐</div>
+        <div class="symbol" style="bottom: 30%; left: 20%; animation-delay: 2s;">☾</div>
+        <div class="symbol" style="top: 60%; right: 25%; animation-delay: 3s;">✧</div>
+        <div class="symbol" style="bottom: 20%; right: 10%; animation-delay: 4s;">◑</div>
+        <div class="symbol" style="top: 40%; left: 5%; animation-delay: 5s;">☽</div>
+    </div>
+
+    <div class="container">
+        <div id="welcome-screen">
+            <h1 class="title">Matteo's Declic</h1>
+            <p class="welcome-text">
+                Lion ascendant Connasse, ton aura trouble les dieux.<br>
+                L'instant est venu.<br>
+                Es-tu prêt.e à découvrir ton Oracle ?
+            </p>
+            <button class="oracle-button" onclick="revealOracle()" aria-label="Découvrir l'oracle mystique du jour">
+                lâches les secrets pétasse
+            </button>
+        </div>
+
+        <div id="oracle-screen" class="prediction-container">
+            <div class="prediction-text" id="prediction-text" role="main" aria-live="polite"></div>
+            <div class="date-info" id="date-info"></div>
+        </div>
+    </div>
+
+    <div id="install-prompt" class="install-prompt" role="dialog" aria-labelledby="install-text">
+        <span id="install-text">📱 Installer l'app pour une expérience mystique complète</span>
+        <button class="install-button" onclick="installApp()" aria-label="Installer l'application">Installer</button>
+        <button class="close-button" onclick="dismissInstall()" aria-label="Fermer la proposition d'installation">✕</button>
+    </div>
+
+    <script>
+        // Date de création de l'application
+        const APP_CREATION_DATE = new Date('2025-07-27');
+
+        // Toutes les prédictions dans l'ordre
+        const predictions = [
+            "Aujourd'hui, Christine Taubira te prête son éloquence. Parle avec passion, même pour commander un latte",
+            "Ton cœur tangue comme un château ambulant : poétique, imprévisible, follement aimable",
+            "Tu es l'élégance incarnée façon Donatella, même en pyjama chez Ikea",
+            "Signe astrologique du jour : croissant meringué. Tu attires les âmes sucrées",
+            "Aujourd'hui, tes émotions sont aussi fraîches qu'un bouquet de fresias oublié sur le pas d'une porte",
+            "Ton look du jour ? Carrie Bradshaw dans un rêve acidulé de Lady Gaga. Ose la démesure",
+            "Un message d'amour pourrait bien se cacher entre deux rayures. Lis entre les lignes",
+            "Ton énergie est mangue séchée : douce, rare, légèrement piquante. Garde-la précieusement",
+            "N'écoute pas les conseils de Sébastien Delogu aujourd'hui. Même ton GPS a plus de recul",
+            "Karine Le Marchand t'enverrait en finale de l'amour si elle voyait ton sourire ce matin",
+            "Tes finances ne sont pas un drame si tu restes raisonnable… sauf pour les lunettes noires oversized, évidemment",
+            "Ton moral fait des claquettes sur un son de Yelle. Profite de ta bonne humeur rythmée",
+            "Aujourd'hui, chaque fraise que tu croques te rapproche d'un crush inattendu",
+            "Chai latte en main, tu pourrais convaincre n'importe qui de te suivre jusqu'au bout du monde",
+            "Tu es un canapé Ikea aujourd'hui : désirable mais légèrement difficile à assembler. Laisse les gens faire l'effort",
+            "Stéphane Bern t'observe depuis son fauteuil doré : tu es officiellement royal.e aujourd'hui",
+            "Ton aura est pastel citron et chantilly. On fond pour toi sans même goûter",
+            "Tu vibres Cruella d'Enfer, mais version 2025 : stylée, affirmée, éthique",
+            "Kuzco lui-même aurait validé ton entrée en réunion ce matin. Arrogance autorisée",
+            "Aujourd'hui, tu es le personnage principal d'un roman d'été version Apple Latte. Sucré, lent, attachant",
+            "Tu n'es pas en retard : tu fais juste ton entrée façon Lady Gaga, dramatique et parfaitement calculée",
+            "N'attends pas l'amour éternel, construis-le avec des étagères Billy et de la tendresse durable",
+            "Ton âme porte des talons de 12 cm aujourd'hui. Même en baskets, tu prends de la hauteur",
+            "Christine Taubira te souffle une vérité intérieure : ne confonds jamais élégance et discrétion",
+            "Aujourd'hui, ton job ce n'est pas un travail, c'est une performance artistique. Prends le rideau rouge",
+            "Appelle-le par ton prénom, mais surtout, rappelle-toi du tien. Tu es inoubliable",
+            "Ton style du jour fait peur aux jaloux. C'est exactement ce qu'il faut",
+            "Un inconnu va remarquer ton odeur de fraisia et s'en souvenir toute la semaine. C'est ton super-pouvoir",
+            "Signe du jour : popcorn. Léger, croustillant, parfait pour se détendre et séduire",
+            "Aujourd'hui, même ton miroir te drague. C'est mérité, tu rayonnes",
+            "Tu es la personne la plus Donatella du tramway ce matin. Et ça se voit à tes lunettes de star",
+            "Christine Taubira approuverait ta tenue : rebelle, raffinée, révolutionnaire",
+            "Un plan galère pourrait devenir un souvenir inoubliable. Merci les rayures et le hasard",
+            "Ton énergie romantique est comparable à un rayon tartes chez un excellent boulanger : irrésistible et abondante",
+            "On veut tous ton aura : entre fresia, audace, et une pincée de Lady Gaga, tu vibres magnétisme",
+            "Fais confiance à ton instinct : il a aujourd'hui la voix de Stéphane Bern et la sagesse d'une carte Ikea Family",
+            "Ton crush du jour a les vibes Kuzco : beau, brillant… mais potentiellement très fatigant",
+            "Tu es une playlist entre Yelle et Call Me By Your Name : dansante, douce, nostalgique",
+            "Ton âme a mis des plateformes aujourd'hui. Monte, regarde le monde d'en haut",
+            "Christine Taubira dans ta tête, Cruella dans tes chaussures : combo du pouvoir absolu",
+            "Travail, cœur, mode : aujourd'hui tu maîtrises tout, même l'art de faire fondre un cœur avec une gorgée de chai",
+            "S'il pleut, ce ne sont que les anges qui pleurent de ne pas avoir ton flow citronné",
+            "Le style d'aujourd'hui : comme une fraise bien rouge sur un costume impeccable. Audacieux, parfait, inattendu",
+            "Les fleurs fanent, pas ton pouvoir d'attraction. Sois ton propre printemps éternel",
+            "Une tarte citron meringuée t'attend dans l'univers. Ou un flirt en terrasse. Même énergie, choisis les deux",
+            "Ton outfit mérite un générique de fin. N'attends pas la Fashion Week pour faire ton show",
+            "Une personne que tu croises va penser à toi toute la journée. Merci ton parfum ou ton regard. Mystère total",
+            "Aujourd'hui, tes décisions seront bénies par une entité cosmique en robe Versace",
+            "Tu brilles plus que l'allée des lampes chez Ikea. Et c'est dire",
+            "Ton rire est ton accessoire le plus puissant aujourd'hui. Utilise-le sans modération",
+            "Ne cherche pas l'amour aujourd'hui, sois l'amour. Et porte du rose, ça aide",
+            "Christine Taubira dans le cœur, un latte dans la main, l'avenir te sourit avec classe et constance",
+            "Ton crush du jour est aussi mystérieux qu'un meuble sans notice. Mais toi, tu sais t'en sortir",
+            "On te compare secrètement à Carrie Bradshaw. Pas pour tes textes, pour tes talons",
+            "Tu es aujourd'hui la version tartinée de bonheur sur un croissant. On veut tous te croquer",
+            "Si tu doutes, rappelle-toi que tu es plus stylé.e qu'un plaid à rayures bien plié chez Ikea",
+            "L'univers est en train de t'écrire une love story. Mets ton gloss, et tourne la page",
+            "Christine Taubira t'a soufflé une punchline dans ton sommeil. Récite-la aujourd'hui, tu feras mouche",
+            "Fais confiance à la synchronicité. Et si ça ne marche pas, fais confiance à tes boucles d'oreilles",
+            "Aujourd'hui, tes sentiments sont emballés dans un film d'auteur en italien. Et tu es sublime dans le rôle principal",
+            "N'oublie pas : un jour sans style est un jour sans poésie. Mets ces chaussures audacieuses",
+            "Tu es ton propre bouquet de fresias. Sens bon, sois doux, ne te laisse pas cueillir n'importe comment",
+            "Ton humour aujourd'hui peut faire tomber amoureux. Garde ça comme ton atout secret",
+            "Christine Taubira validerait ce moment de douceur que tu t'accordes entre deux e-mails. C'est politique",
+            "Aujourd'hui, ta confiance en toi est montée sur des talons de 15 cm. Impossible à ignorer",
+            "Quelqu'un pensera à toi en sentant une bougie parfumée. Tu es plus présent·e que tu ne le crois",
+            "Ton look est un mix entre bibliothèque suédoise et tapis rouge. Inclassable, donc inoubliable",
+            "Tu marches dans la rue comme Christine Taubira dans un débat : ferme, brillante, implacable",
+            "Ton karma ressemble à un latte mousseux aujourd'hui : doux, chaud, et prêt à séduire les âmes perdues",
+            "L'univers te glisse un mot doux dans chaque regard croisé. Sois attentif·ve",
+            "Ton crush pense à toi à chaque bouchée de mangue séchée. Tu hantes les papilles",
+            "Tu es la version estivale de Cruella aujourd'hui : solaire, dominatrice et parfumée au jasmin",
+            "Un e-mail que tu écris aujourd'hui pourrait changer ta vie. Mets-y ta touche Donatella",
+            "Tu es exactement ce que ton ex essaie de recréer chez quelqu'un d'autre. Triste, mais flatteur",
+            "Ta coupe de cheveux fait de toi une œuvre d'art urbaine. Ne laisse personne te décoiffer",
+            "Christine Taubira te transmet son sens du mot juste : utilise-le pour régler un conflit avec style",
+            "Tu es cette personne qui illumine les open spaces sombres. Lâche un compliment, tu crées des révolutions",
+            "Ton signe astral du jour est : fraise trempée dans le champagne. Tu vibres plaisir et luxe accessible",
+            "Une amitié pourrait naître autour d'un croissant. Rappelle-toi que les grandes histoires commencent souvent au beurre",
+            "Aujourd'hui, la lune te fait un clin d'œil. Tu pourrais bien tomber amoureux.se de quelqu'un avec des lunettes rondes",
+            "Ton humour est la crème chantilly sur une journée grise. Offre une blague, récolte un sourire",
+            "Les énergies du jour crient : accessoires oversized et silence bienveillant. Tu es la paix stylée",
+            "Ta colère peut aujourd'hui devenir une œuvre d'art. Canalise-la dans ta garde-robe",
+            "Un inconnu va t'appeler par un prénom qui n'est pas le tien. Prends-le comme une renaissance",
+            "Ton miroir est jaloux de toi. Petit conseil : fais un selfie pour l'apaiser",
+            "Aujourd'hui, même Christine Taubira aurait des frissons en écoutant ta playlist",
+            "Ta démarche inspire confiance et désir. Tu pourrais vendre des miroirs à Narcisse",
+            "Tu es comme une étagère Billy customisée : classique de loin, révolutionnaire de près",
+            "L'amour a l'odeur de ton gel douche aujourd'hui. Savonne-toi avec ambition",
+            "Tu pourrais tomber amoureux.se d'un pull à rayures. Ce serait l'histoire la plus douce de l'été",
+            "Ton destin est plié comme un croissant parfait : en couches subtiles, doré, et un peu fragile au cœur",
+            "Ta voix a aujourd'hui la gravité d'un discours et la tendresse d'une berceuse. Parle, on t'écoute",
+            "Tu peux traverser un cœur comme une comète. Laisse un peu de lumière derrière toi",
+            "Le monde est ton podium. Ton trottoir est le catwalk de ton âme. Marque les esprits",
+            "Ce n'est pas une journée pour être timide. Aujourd'hui, tu es 100 % Gaga : show first, regrets later",
+            "Un compliment sincère changera ta trajectoire ce matin. Ne le minimise pas",
+            "Ton inspiration est aujourd'hui un bol de citron meringué. Laisse éclater tes idées acidulées",
+            "Le style est ton bouclier. Tu n'as besoin de rien d'autre pour dominer cette journée",
+            "Tes pensées sont une playlist entre introspection et house française. Laisse-les danser",
+            "Tu es la personne que ton toi d'hier rêvait de devenir. Rappelle-toi de ce progrès invisible",
+            "Quelqu'un tombera amoureux de ton rire en terrasse. Ne ris pas dans ta manche, ris grand",
+            "Aujourd'hui, tu écris ton roman intérieur avec une plume dorée. Ton chapitre est lumineux",
+            "Même Christine Taubira aurait aimé te citer aujourd'hui. Sors une phrase puissante",
+            "Ton aura est un smoothie passion-fraise : rare, vibrant, nutritif pour les âmes ternes",
+            "Le premier mot que tu prononceras ce matin définira ta vibration du jour. Choisis bien",
+            "Tu es cette personne dans le métro qu'on n'ose pas aborder. Tant de mystère mérite un parfum",
+            "Un secret te sera confié. Porte-le comme un accessoire précieux",
+            "Ton élégance est organique. Elle ne vient pas de la marque, mais de la manière",
+            "Aujourd'hui, tu es un poème libre dans un monde de manuels d'assemblage",
+            "Tu pourrais influencer quelqu'un rien qu'avec la façon dont tu tiens ton café. C'est ton pouvoir discret",
+            "Une larme, même légère, peut faire briller ton regard plus que n'importe quel highlighter",
+            "Christine Taubira dans ton dos, Cruella dans ta marche, et l'amour pas loin. Bonne journée",
+            "Si le monde est une scène, tu es aujourd'hui le monologue qui change la pièce entière",
+            "Même ton ombre est bien habillée aujourd'hui. Tu vibres coordination céleste",
+            "Les anges te regardent et prennent des notes. Tes choix vestimentaires sont divins",
+            "Ce n'est pas le destin qui frappe à ta porte aujourd'hui, c'est toi qui défonces la sienne",
+            "Un message laissé en vue ? Pas grave. Aujourd'hui, ton silence est un luxe",
+            "Tu es plus organisé.e que tu ne le crois. Range tes pensées comme chez Ikea, et avance",
+            "Tes lunettes ne servent pas qu'à voir : elles encadrent ton charisme",
+            "Laisse-toi traverser par une pensée douce. Elle pourrait devenir une décision forte",
+            "Aujourd'hui, même ton allergie au pollen est élégante. Tu éternues avec grâce",
+            "Ton crush pense à toi chaque fois qu'il entend un mot italien. Merci Call Me By Your Name",
+            "Un souvenir doux te visitera. Accueille-le avec une tasse de chai bien chaude",
+            "Même Christine Taubira dirait que tu es un miracle de style tranquille aujourd'hui",
+            "Tes mains racontent quelque chose. Geste après geste, tu écris ta propre chorégraphie",
+            "Aujourd'hui, tu es le protagoniste d'un film qui n'a pas encore été tourné. Mais le générique est chic",
+            "Ton brushing a des ambitions politiques. Il veut diriger un cœur, voire un pays",
+            "Quelqu'un rêve de toi sans te connaître. L'univers organise la rencontre",
+            "Aujourd'hui, ton sac à main contient plus de pouvoir que le bureau d'un ministre",
+            "Tu vibres comme une playlist entre robe satinée et tartine beurrée : douceur tranchante",
+            "Ton regard arrête le temps. Aujourd'hui, les aiguilles te suivent",
+            "Tu n'as pas besoin de chance aujourd'hui, juste d'un bon gloss et d'un peu de culot",
+            "Tu pourrais signer un traité de paix mondial juste avec ton sourire en terrasse",
+            "Ton aura est un after chez Versace : lumière tamisée, conversations brillantes, et talons hauts",
+            "Ton style aujourd'hui dit 'je suis très occupé·e' mais ton énergie dit 'viens quand même'",
+            "Une personne croisée aujourd'hui va te stalker sur Instagram ce soir. Sois prêt·e",
+            "Ton agenda est serré, mais ton charisme est fluide. Laisse-toi porter",
+            "Si l'élégance était une monnaie, tu serais milliardaire ce lundi",
+            "Ton café est tiède, mais ton aura est brûlante. Ne te sous-estime pas",
+            "Tu as plus de sex-appeal qu'un rayon pâtisserie en fin d'après-midi",
+            "Aujourd'hui, tu es plus inspirant·e que la citation sur une boîte de muesli bio",
+            "Ton manteau flotte comme une cape de super-héros romantique. Sauve des cœurs, au moins",
+            "Ton vernis est impeccable. Même les astres s'alignent pour te rendre hommage",
+            "Un compliment sincère te servira d'armure aujourd'hui. Porte-le comme un bijou",
+            "Tu es l'interview de fin d'émission : percutant·e, inattendu·e, inoubliable",
+            "Tu pourrais te faire draguer juste pour ta façon de dire 'pardon' en souriant",
+            "Ton rire a aujourd'hui la résonance d'un hymne disco : fédérateur et sexy",
+            "Aujourd'hui, tu es une vision. Et certains n'ont tout simplement pas la résolution",
+            "Ton crush n'a aucune chance contre ce blazer et ce regard. Frappe fort, doucement",
+            "Si la confiance avait un visage aujourd'hui, ce serait le tien sous un béret",
+            "Tu n'as besoin de personne pour briller. Mais ta présence éclaire aussi les autres",
+            "Une vibe intérieure aujourd'hui te pousse vers le oui. Dis-le franchement, avec panache",
+            "Ton crush va remarquer un détail de ta tenue. C'est là que la magie commence",
+            "Ton attitude du jour : entre diplomatie Taubira et audace Donatella",
+            "Tu es la chanson qu'on remet en boucle sans s'en rendre compte. Addictif·ve, sans efforts",
+            "Une miette de croissant sur ton col ne gâchera rien. Elle est poétique, aujourd'hui",
+            "Tu pourrais porter une housse de couette et la rendre désirable. C'est ton superpouvoir",
+            "Ton rire déclenche des crushs silencieux. Continue de contaminer le monde",
+            "Aujourd'hui, tu es la réponse à une question qu'on n'a pas encore osé poser",
+            "Tes pensées brillent comme une vitrine éclairée à 3h du matin. Pleines de trésors",
+            "Un inconnu tombera amoureux de ta façon de dire bonjour. Normal, tu l'as appris chez les anges",
+            "Ton silence fait plus de bruit que le feed d'un influenceur. Puissance tranquille",
+            "Un vêtement que tu hésites à porter te donnera aujourd'hui un pouvoir inattendu",
+            "Ton audace va renverser un plan prévu. Et tout le monde te remerciera secrètement",
+            "Si on devait te résumer aujourd'hui : une tarte citron meringuée à talons, tout en finesse",
+            "Un sourire offert dans l'ascenseur changera l'ambiance de toute une journée",
+            "Tu es ton propre scénario d'amour, avec une BO signée Gaga. Tournage en cours",
+            "Même les miroirs s'arrêtent pour t'admirer aujourd'hui. Et ils en ont vu passer",
+            "Une main effleurée aujourd'hui vaut mille mots. Ton toucher est narratif",
+            "Tu n'as besoin de rien d'autre qu'un pull bien coupé pour être souverain·e",
+            "Aujourd'hui, même les gens pressés ralentiront pour mieux te regarder",
+            "Ton intelligence sociale est aussi affûtée qu'un eyeliner réussi. Imparable",
+            "Un simple mot dit avec élégance fera effet boule de neige aujourd'hui",
+            "Tu es l'apéritif, le plat et le dessert de cette journée. Complet·e et savoureux·se",
+            "Ce que tu considères comme 'banal' inspire secrètement les autres",
+            "Ton style est une menace douce aujourd'hui. On te regarde avec envie et respect",
+            "Aujourd'hui, tu es l'exception. Les règles du jeu attendent ta validation",
+            "Le métro est ta scène. Chaque pas, une chorégraphie magnétique",
+            "Tu seras le souvenir préféré de quelqu'un ce soir. Pas besoin de parler",
+            "Tu portes une tendresse inaccessible. Et c'est ce qui fascine",
+            "Tu es aujourd'hui une version rare de toi-même. Ne la sous-estime pas",
+            "Si ton sourire était un produit, il serait en rupture de stock chaque semaine",
+            "Tu as aujourd'hui la patience d'un meuble Ikea monté sans notice. Légende",
+            "Ton téléphone va vibrer au bon moment. Ce ne sera pas un bug, mais le destin",
+            "Tu transformes les regards pressés en regards prolongés. C'est un art",
+            "Un simple 'ça va ?' dit avec ton ton change la météo intérieure des gens",
+            "Ton feed Instagram n'est pas prêt pour l'énergie que tu dégages aujourd'hui",
+            "Tu es une œuvre exposée par erreur dans le rayon vaisselle. Et tout le monde veut t'acheter",
+            "Aujourd'hui, la chance porte des bottines et un regard franc. Et c'est toi",
+            "Ton audace silencieuse te précède comme un parfum de fruits rouges",
+            "Tu vas déclencher une décision chez quelqu'un sans le savoir. Pouvoir discret",
+            "Tu es la bonne surprise d'un lundi gris. On ne t'attendait pas, et c'est ça la magie",
+            "Tu pourrais réciter l'annuaire aujourd'hui, et quelqu'un tomberait amoureux de ta voix",
+            "Un détail que tu considères anodin sera le charme fatal de ta journée",
+            "Tu portes la dualité de Kuzco et Carrie Bradshaw : égocentrique, mais si bien habillé·e",
+            "Ton énergie est une playlist confidentielle. Ceux qui l'entendent se souviennent à vie",
+            "Tu es le moodboard vivant de quelqu'un, sans le savoir",
+            "Aujourd'hui, tu as l'éloquence d'une déclaration Taubira, et la coupe de cheveux d'un héros pop",
+            "Quelqu'un tombera amoureux de toi à cause d'un parfum que tu ne sens plus",
+            "Ton crush va se souvenir de toi à chaque fois qu'il entendra Lady Gaga",
+            "Ton aura fait fleurir un freesia ce matin. Oui, tu es floralement magique",
+            "Tu es l'invité·e mystère dans le talk-show du destin aujourd'hui",
+            "Ton silence vaut un éditorial mode. Aujourd'hui, pas besoin de trop parler",
+            "Tu pourrais convaincre Stéphane Bern d'aimer les cuisines ouvertes. C'est dire",
+            "Ta journée est une framboise sur un mille-feuille : inattendue, fragile, précieuse",
+            "Ton regard a plus d'impact qu'un discours à l'Assemblée. Laisse-le parler",
+            "Aujourd'hui, même ton ombre te suit avec admiration",
+            "Tu ne fais pas que marcher, tu chorégraphies les trottoirs",
+            "Une photo prise aujourd'hui deviendra iconique. Même floue",
+            "Ton aura est du velours aujourd'hui : douce au toucher, irrésistible à l'approche",
+            "Tu es la gorgée de chai latte qu'on n'oublie jamais",
+            "Quelqu'un cherchera ton prénom après t'avoir croisé. Tu laisses des empreintes",
+            "Aujourd'hui, tu portes l'élégance comme Cruella porte le noir et blanc : sans excuse",
+            "Ta gentillesse te rend redoutable. Personne ne s'y attend, tout le monde s'incline",
+            "Ton sens de la répartie va marquer quelqu'un. Prépare une punchline chic",
+            "Une larme pourrait te rendre encore plus beau·belle aujourd'hui. Oui, même celle du vent",
+            "Ton crush ne sait pas encore qu'il est tombé amoureux d'une vibration",
+            "Tu es aujourd'hui la scène post-générique d'un film culte. Personne ne s'y attend, tout le monde est ravi",
+            "Une playlist croisée par hasard définira ton humeur. Ne zappe pas trop vite",
+            "Tu pourrais déclencher une mode avec une chaussette. C'est dire ton niveau d'influence",
+            "Une phrase que tu diras à la va-vite deviendra un mantra pour quelqu'un",
+            "Ton charisme d'aujourd'hui pourrait tenir lieu de carte d'identité",
+            "Tu es le décor Pinterest d'un cœur esseulé. Et ça, c'est chic",
+            "Aujourd'hui, tu es plus 'Donatella au marché bio' que jamais. L'inattendu te va bien",
+            "Ton passage laisse une ambiance. Et certains resteront pour respirer plus longtemps",
+            "Tu pourrais draguer juste avec ta commande de latte",
+            "Une fleur que tu croiseras semble t'avoir attendu toute sa vie. Prends-la en photo",
+            "Ton naturel est aussi affûté qu'un look de défilé. Pas besoin d'en faire trop",
+            "Quelqu'un va faire un choix à cause d'un mot dit par toi sans réfléchir",
+            "Ton brushing résiste au vent et aux mauvaises vibes. Force capillaire",
+            "Un rêve te révélera une réponse. Même flou, il est clair pour ton cœur",
+            "Aujourd'hui, tu es l'icône que tu attends. Ne cherche pas ailleurs",
+            "Tu peux t'habiller triste et être éclatant·e. Ton aura te dément à chaque pas",
+            "Ton rire est le hit de l'été dans le cœur de quelqu'un",
+            "Tu es ce souvenir qui fait sourire en regardant par la fenêtre du bus",
+            "Un aliment mangé aujourd'hui va te rappeler une époque tendre. Laisse-toi traverser",
+            "Tu es la bande-son secrète d'une histoire qui commence",
+            "Un inconnu va te confondre avec une célébrité. Accepte le compliment avec panache",
+            "Ton énergie aujourd'hui fait pousser des fleurs dans les esprits secs",
+            "Ton choix de chaussures va déclencher une discussion de fond. C'est politique",
+            "Tu es la cerise sur un gâteau que personne n'ose toucher. Désirable et sacré",
+            "Aujourd'hui, même tes silences créent du contenu",
+            "Quelqu'un tombera amoureux de ton mot de passe wifi. Tu vibres jusque dans les détails",
+            "Ta sensibilité est une force de construction. Bâtis ton empire émotif",
+            "Ton walk dans un couloir vaut un défilé. Offre-le au monde",
+            "Tu es le filtre 'golden hour' d'une réalité un peu terne. Merci pour ça",
+            "Christine Taubira pourrait te citer dans une conférence TED. Prépare un discours",
+            "Ta présence guérit mieux qu'un message lu. Tu es l'effet immédiat",
+            "Un secret viendra à toi. Garde-le comme un bijou rare",
+            "Ta veste aujourd'hui mérite un article entier dans un magazine qui n'existe pas encore",
+            "Ton simple bonjour a le pouvoir de réconcilier deux personnes fâchées",
+            "Tu as le style d'un matin froid et le cœur d'un dimanche chaud",
+            "Aujourd'hui, même ta maladresse est artistique",
+            "Une vérité douce sortira de ta bouche sans que tu t'en rendes compte",
+            "Tu es la fleur rare dans un jardin Ikea. Peu l'ont vue, tous la cherchent",
+            "Ton rire sera enregistré par l'univers comme sonnerie de joie permanente",
+            "Ton aura est aujourd'hui une chanson de Lady Gaga : puissante et inoubliable",
+            "Un sourire échangé dans la rue sera ton cadeau le plus précieux aujourd'hui",
+            "Tu es le fruit séché dans le granola de quelqu'un : discret·e mais indispensable",
+            "Ton look matinal pourrait faire passer un défilé de mode pour un rassemblement banal",
+            "Tu as l'élégance d'un freesia en pleine ville : rare et délicate",
+            "Ton énergie est un château ambulant, toujours en mouvement, surprenante et magique",
+            "Ton courage est aujourd'hui aussi net qu'une déclaration de Christine Taubira",
+            "Tu rayonnes plus qu'un chai latte fumant dans un café du matin",
+            "Un compliment inattendu pourrait bouleverser ton après-midi, ouvre grand tes oreilles",
+            "Tu portes la douceur d'une tarte citron meringuée, mais avec un punch de croissant",
+            "Ton style de marche crée des histoires secrètes entre les passants, ose l'aventure",
+            "Tu es la rayure qui casse la monotonie d'un costume trop strict aujourd'hui",
+            "Une discussion banale deviendra ton moment préféré de la journée. Sois attentif·ve",
+            "Ta confiance ressemble à un défilé signé Donatella : audacieuse et brillante",
+            "Ton regard a le pouvoir d'arrêter le temps dans un café bondé",
+            "Tu es l'icône imprévue dans un magasin Ikea, élégante même au milieu des meubles",
+            "Une pensée douce aujourd'hui transformera un conflit en complicité inattendue",
+            "Ton style est un mix parfait entre Carrie Bradshaw et Karine Lemarchand, glamour et naturel",
+            "Tu pourrais faire fondre un cœur juste avec un air entendu et un sourire discret",
+            "Ton aura fait vibrer un vieux disque aujourd'hui : nostalgie moderne et chic",
+            "Tu es plus irrésistible qu'une mangue séchée au milieu d'une assiette de charcuterie",
+            "Une lettre ou un message changera ton humeur, sois prêt·e à recevoir de la lumière",
+            "Ton parfum secret pourrait devenir la signature d'une histoire d'amour à venir",
+            "Ton éclat d'aujourd'hui rendra jaloux les projecteurs des plus grandes scènes",
+            "Un geste simple te vaudra une admiration secrète, même sans t'en rendre compte",
+            "Ton naturel est une arme de séduction massive aujourd'hui, joue-la sans filtre",
+            "Tu es la promesse d'une journée pleine de surprises, laisse-toi guider par ton intuition",
+            "Un clin d'œil échangé suffira à faire vibrer un cœur solitaire dans ta journée",
+            "Ton style est un poème visuel, écrit avec les rayures et les couleurs du jour",
+            "Tu es la douceur d'un chai latte en plein hiver, réconfortante et pleine de chaleur",
+            "Ton énergie est contagieuse, prépare-toi à illuminer la journée de plusieurs personnes",
+            "Tu pourrais déclencher une mode sans t'en rendre compte, rien qu'en choisissant ta tenue",
+            "Aujourd'hui, ton aura est plus Lady Gaga que jamais : flamboyante et audacieuse",
+            "Un moment de calme aujourd'hui sera ton meilleur allié pour recharger tes forces",
+            "Ton rire a le pouvoir de désarmer même les plus réticents, ne te prive pas de lui",
+            "Tu es la touche finale d'un look parfait, ce détail que personne n'oubliera",
+            "Une conversation anodine se transformera en moment d'inspiration profonde",
+            "Ton charme est un château ambulant qui déplace les montagnes autour de toi",
+            "Tu es le fruit de la passion et de la douceur, comme une tarte citron meringuée revisitée",
+            "Une surprise inattendue aujourd'hui réveillera ton côté aventurier·ère",
+            "Tu as l'élégance tranquille d'un freesia au milieu d'un champ sauvage",
+            "Ton esprit est une rivière claire, rafraîchissante et pleine de vie, ne la retiens pas",
+            "Un regard échangé dans le métro pourrait être le début d'une belle histoire",
+            "Ton aura est une danse légère entre passé et futur, entre mystère et lumière",
+            "Tu es la promesse d'un printemps anticipé, même si l'hiver est encore là",
+            "Ta présence aujourd'hui est un cadeau pour ceux qui croisent ta route, sois-en fier·e",
+            "Un simple geste aujourd'hui pourra apaiser un cœur inquiet, prends soin de toi",
+            "Ton style est une histoire que tu écris à chaque pas, avec audace et douceur",
+            "Tu es l'étoile filante dans le ciel d'une soirée ordinaire, exceptionnelle et brève",
+            "Un petit secret partagé aujourd'hui te liera plus fort à quelqu'un de spécial",
+            "Ton sourire aujourd'hui est la meilleure invitation à la tendresse et à l'audace",
+            "Tu es le mélange parfait entre force et vulnérabilité, comme une fleur fragile et résistante",
+            "Une idée née aujourd'hui pourrait transformer ta façon de voir le monde",
+            "Ton look est la bande-son visuelle d'une journée pleine d'espoir et de promesses",
+            "Tu as la magie d'une mangue séchée au soleil : rare, douce et précieuse",
+            "Ton énergie est celle d'un château ambulant : toujours en mouvement, fascinant·e et libre",
+            "Un mot dit à voix basse aujourd'hui pourrait ouvrir une porte inattendue",
+            "Tu es la douceur d'un chai latte au réveil, réconfortante et pleine de promesses",
+            "Ton aura aujourd'hui est un poème que même Christine Taubira applaudirait",
+            "Tu es la star discrète d'un film qu'on aurait envie de revoir encore et encore",
+            "Un détail dans ta tenue sera remarqué et admiré, même par les plus critiques",
+            "Ton rire est la bande-son secrète qui fera vibrer le cœur de quelqu'un ce soir",
+            "Tu es une étoile filante, rare et précieuse, qui traverse la vie avec grâce",
+            "Un message reçu aujourd'hui pourrait changer le cours de ta journée, reste ouvert·e",
+            "Ton style est un mélange audacieux entre Carrie Bradshaw et Cruella d'Enfer, unique et fascinant",
+            "Tu es la douceur inattendue dans un monde parfois trop dur, ne change rien",
+            "Un clin d'œil complice aujourd'hui sera le début d'une belle complicité",
+            "Ton énergie fait pousser des fleurs là où il n'y avait que du béton, merci d'être toi",
+            "Tu es l'incarnation parfaite de la tendance rayures, élégante et audacieuse",
+            "Un simple sourire aujourd'hui pourra illuminer la journée de quelqu'un d'autre",
+            "Ton charisme est un château ambulant : impressionnant, imprévisible, irrésistible",
+            "Tu es la promesse d'un jour meilleur, même si la nuit est encore longue",
+            "Ton style est un mix parfait entre l'audace de Donatella et la douceur de Karine Lemarchand",
+            "Un regard échangé aujourd'hui pourrait être le début d'une histoire passionnante",
+            "Tu es la lumière douce d'un freesia, fragile mais pleine de vie",
+            "Ton énergie aujourd'hui est une tarte citron meringuée façon croissant : douceur et piquant",
+            "Un petit geste d'amour aujourd'hui aura un impact plus grand que tu ne l'imagines",
+            "Tu es la promesse d'un renouveau, un souffle frais dans l'air lourd de la routine",
+            "Ton aura est une déclaration d'amour silencieuse, puissante et touchante",
+            "Un mot doux échangé aujourd'hui peut changer une vie, ne sous-estime jamais ton pouvoir",
+            "Tu es l'incarnation parfaite de la confiance à la Lady Gaga : forte, libre et inspirante",
+            "Un moment de douceur aujourd'hui te donnera l'énergie nécessaire pour avancer",
+            "Ton style est un poème visuel, une ode à la beauté et à la liberté",
+            "Tu es la magie d'un fruit séché au soleil : rare, précieux et intemporel",
+            "Un regard échangé aujourd'hui fera battre un cœur un peu plus fort",
+            "Tu es la douceur d'un chai latte, réconfortante et pleine de promesses",
+            "Ton énergie aujourd'hui est un château ambulant : fascinant·e, libre et surprenant·e",
+            "Un sourire offert aujourd'hui pourrait être le début d'une belle aventure",
+            "Tu es la promesse d'un jour meilleur, même si le chemin est encore long",
+            "Ton aura est une mélodie douce et puissante à la fois, un hymne à la vie",
+            "Un petit geste d'amour aujourd'hui aura un impact plus grand que tu ne l'imagines",
+            "Tu es la force tranquille d'un freesia en pleine tempête, fragile mais résistante",
+            "Ton style aujourd'hui est un mélange parfait entre Carrie Bradshaw et Christine Taubira, glamour et engagée",
+            "Un mot doux échangé aujourd'hui peut changer une vie, ne sous-estime jamais ton pouvoir",
+            "Tu es la magie d'une mangue séchée : rare, précieuse et pleine de vie",
+            "Un regard échangé aujourd'hui fera battre un cœur un peu plus fort",
+            "Tu es la douceur d'un chai latte au petit matin, réconfortante et pleine d'espoir"
+        ];
+
+        // Variables de cache
+        let dailyPredictionCache = null;
+        let cacheDate = null;
+
+        // PWA variables
+        let deferredPrompt;
+
+        // Obtenir la prédiction pour une date spécifique
+        function getPredictionForDate(date) {
+            const diffTime = date - APP_CREATION_DATE;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays < 0) {
+                return null;
+            }
+            
+            const predictionIndex = diffDays % predictions.length;
+            return predictions[predictionIndex];
+        }
+
+        // Obtenir la prédiction du jour
+        function getTodaysPrediction() {
+            const today = new Date();
+            return getPredictionForDate(today);
+        }
+
+        function getDailyPrediction() {
+            const today = new Date().toDateString();
+            
+            if (cacheDate === today && dailyPredictionCache) {
+                return dailyPredictionCache;
+            }
+            
+            const prediction = getTodaysPrediction();
+            dailyPredictionCache = prediction;
+            cacheDate = today;
+            
+            return prediction;
+        }
+
+        // Révéler l'oracle
+        function revealOracle() {
+            const prediction = getDailyPrediction();
+            
+            if (prediction === null) {
+                document.getElementById('prediction-text').textContent = "L'oracle n'existait pas encore à cette époque mystique...";
+            } else {
+                document.getElementById('prediction-text').textContent = prediction;
+            }
+            
+            const today = new Date();
+            const dateString = today.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            document.getElementById('date-info').textContent = `Oracle du ${dateString}`;
+            
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('oracle-screen').style.display = 'block';
+        }
+
+        // Vérification du changement de jour
+        function checkForNewDay() {
+            const today = new Date().toDateString();
+            if (cacheDate && cacheDate !== today) {
+                dailyPredictionCache = null;
+                cacheDate = null;
+                
+                if (document.getElementById('oracle-screen').style.display === 'block') {
+                    revealOracle();
+                }
+            }
+        }
+
+        // PWA Installation
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallPrompt();
+        });
+
+        function showInstallPrompt() {
+            const installPrompt = document.getElementById('install-prompt');
+            installPrompt.style.display = 'block';
+            
+            setTimeout(() => {
+                if (installPrompt.style.display === 'block') {
+                    installPrompt.style.display = 'none';
+                }
+            }, 10000);
+        }
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    console.log('🔮 Installation choice:', choiceResult.outcome);
+                    deferredPrompt = null;
+                    document.getElementById('install-prompt').style.display = 'none';
+                });
+            }
+        }
+
+        function dismissInstall() {
+            document.getElementById('install-prompt').style.display = 'none';
+        }
+
+        // Gestion URL params pour shortcuts
+        function handleUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('shortcut') === 'today') {
+                setTimeout(() => {
+                    if (document.getElementById('welcome-screen').style.display !== 'none') {
+                        revealOracle();
+                    }
+                }, 1000);
+            }
+        }
+
+        // Vérifier au retour dans l'app
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                checkForNewDay();
+            }
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then((registration) => {
+                        console.log('🔮 Service Worker enregistré:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('❌ Erreur Service Worker:', error);
+                    });
+            });
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            handleUrlParams();
+            setInterval(checkForNewDay, 60000);
+            console.log('🔮 Matteo\'s Declic chargé avec', predictions.length, 'prédictions');
+            console.log('📅 Date de création:', APP_CREATION_DATE.toLocaleDateString('fr-FR'));
+        });
+
+        // Prevention du zoom double-tap sur mobile
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
